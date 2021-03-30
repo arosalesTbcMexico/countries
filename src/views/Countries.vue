@@ -55,6 +55,7 @@
     import MainLayout from './../layouts/MainLayout'
     import services from './../services'
     import helpers from './../utils/helpers'
+    import marvelApi from './../services/services'
     export default {
         components: {
             MainLayout
@@ -92,6 +93,8 @@
             try {
                 let response = await services.getCountries();
                 this.countries = response.data;
+                console.log(marvelApi.getCharacters());
+                console.log(marvelApi.getComics());
             } catch (error) {
                 console.log(error);
             }
