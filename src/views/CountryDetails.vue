@@ -85,8 +85,8 @@
 
 <script>
     import MainLayout from './../layouts/MainLayout'
-    import services from './../services'
     import helpers from './../utils/helpers'
+    import {mapState, mapActions} from 'vuex'
     export default {
         props: {
             id: {
@@ -99,14 +99,13 @@
         },
         data() {
             return {
-                country: {
-                    topLevelDomain: [],
-                    currencies: [],
-                    languages: []
-                },
                 helpers
             }
         },
+        computed:
+            mapState({
+                country: state => state.country.country
+            }),
         mounted() {
             this.getContry(this.id);
         },
@@ -114,16 +113,10 @@
             this.getContry(to.params.id);
             next();
         },
-        methods: {
-            async getContry(alpha) {
-                try {
-                    let response = await services.getContry(alpha);
-                    this.country = response.data;
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        }
+        methods: 
+            mapActions({
+                getContry: 'country/getCountry'
+            })
     }
 </script>
 

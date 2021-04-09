@@ -13,7 +13,7 @@ export default {
     getCountries() {
         return api.get('all');
     },
-    getContry(id) {
+    getCountry(id) {
         return api.get(`alpha/${id}`);
     }
 }

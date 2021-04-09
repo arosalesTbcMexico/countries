@@ -53,52 +53,35 @@
 
 <script>
     import MainLayout from './../layouts/MainLayout'
-    import services from './../services'
     import helpers from './../utils/helpers'
-    import marvelApi from './../services/services'
+    import {mapGetters, mapActions} from 'vuex'
     export default {
         components: {
             MainLayout
         },
         data() {
             return {
-                countries: [],
                 helpers,
                 search: '',
                 region: ''
             }
         },
         computed: {
+            ...mapGetters({
+                countries: 'country/filterCountries',
+                regions: 'country/regions'
+            }),
             filterCountries() {
-                let result = this.countries;
-                if(this.search) {
-                    result = result.filter(e => e.name.toLowerCase() == this.search.toLowerCase());
-                }
-                console.log(this.region);
-                if(this.region) {
-                    result = result.filter(e => e.region == this.region);
-                }
-                if(!result.length) {
-                    result = this.countries;
-                }
-                return result;
-            },
-            regions() {
-                let regions = this.countries.map(e => e.region).filter((e, i, s) => s.indexOf(e) === i).sort();
-                regions.shift();
-                return regions;
+                return this.countries(this.search, this.region)
             }
         },
-        async mounted() {
-            try {
-                let response = await services.getCountries();
-                this.countries = response.data;
-                console.log(marvelApi.getCharacters());
-                console.log(marvelApi.getComics());
-            } catch (error) {
-                console.log(error);
-            }
-        }
+        mounted() {
+            this.getCountries();
+        },
+        methods: 
+            mapActions({
+                getCountries: 'country/getCountries'
+            })
     }
 </script>
 
